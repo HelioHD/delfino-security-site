@@ -1,0 +1,192 @@
+<!doctype html>
+<!--
+  Delfino Security
+  Autor / Author: Hélio Delfino Lopes de Alcântara —
+  Pesquisador e pentester web especializado / Security researcher & web penetration tester
+-->
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Delfino Security · Pentest web e análise de código</title>
+  <meta name="description" content="Análise de vulnerabilidades em codebase, pentest web automatizado com IA e consultoria de desenvolvimento seguro. Cada achado validado por um pentester humano.">
+  <meta name="author" content="Hélio Delfino Lopes de Alcântara">
+  <meta name="theme-color" content="#f6f6f3">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Delfino Security">
+  <meta property="og:description" content="Pentest web + IA, análise de vulnerabilidades em codebase e consultoria de desenvolvimento seguro.">
+  <meta property="og:locale" content="pt_BR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Delfino Security">
+      <svg viewBox="48 56 176 130" class="brand-mark" aria-hidden="true"><rect x="52" y="150" width="32" height="32" rx="8"/><rect x="98" y="150" width="32" height="32" rx="8"/><path d="M190 60 L152 182 L182 182 L220 60 Z" class="slash"/></svg>
+      <span class="brand-name">delfino<span class="brand-sub">security</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#servicos" data-i18n="nav.services">Serviços</a>
+      <a href="#metodo" data-i18n="nav.method">Método</a>
+      <a href="#faq" data-i18n="nav.faq">Dúvidas</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="lang" type="button" id="lang-toggle" aria-label="Idioma / Language">
+        <span data-lang="pt">PT</span><span data-lang="en">EN</span>
+      </button>
+      <a class="btn btn-dark btn-sm js-wa" href="#" target="_blank" rel="noopener" data-i18n="nav.cta">Falar comigo</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <canvas id="radar" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <h1 class="wordmark">delfino<span class="cursor" aria-hidden="true"></span></h1>
+      <p class="hero-lead" data-i18n="hero.lead">Encontro as vulnerabilidades da sua aplicação antes de um atacante, com IA no ataque e um pentester humano validando cada achado.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-dark js-wa" href="#" target="_blank" rel="noopener" data-i18n="hero.cta">Pedir um diagnóstico</a>
+        <button class="pill-cmd js-copy" type="button" id="copy-mail" aria-label="Copiar e-mail">
+          <span class="prompt">$</span><span class="cmd">mail helio.delfinola@gmail.com</span>
+          <svg class="copy-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+          <span class="copied" data-i18n="copied">copiado</span>
+        </button>
+      </div>
+      <div class="hero-tags"><span><b>›</b> <span data-i18n="tag1">codebase</span></span><span><b>›</b> <span data-i18n="tag2">pentest web + IA</span></span><span><b>›</b> <span data-i18n="tag3">desenvolvimento seguro</span></span></div>
+    </div>
+  </section>
+
+  <section class="section" id="servicos">
+    <div class="wrap">
+      <span class="eyebrow">[ <span data-i18n="services.eyebrow">serviços</span> ]</span>
+      <h2 data-i18n="services.title">Três frentes para nada explorável chegar em produção.</h2>
+      <div class="cards">
+        <article class="card">
+          <div class="card-top"><span class="tag">[SAST + MANUAL]</span></div>
+          <h3 data-i18n="s1.title">Análise de vulnerabilidades em codebase</h3>
+          <p data-i18n="s1.desc">Revisão do código-fonte com apoio de IA e leitura manual. Cada achado vem com o trecho vulnerável, a prova de exploração e a correção sugerida.</p>
+          <ul class="list">
+            <li data-i18n="s1.i1">Autenticação, autorização e regras de negócio</li>
+            <li data-i18n="s1.i2">Injeções, deserialização, SSRF e path traversal</li>
+            <li data-i18n="s1.i3">Dependências vulneráveis e segredos no repositório</li>
+            <li data-i18n="s1.i4">Relatório priorizado por CVSS, com patch sugerido</li>
+          </ul>
+        </article>
+        <article class="card card-feature">
+          <div class="card-top"><span class="tag">[DAST + IA]</span><span class="badge" data-i18n="s2.badge">carro-chefe</span></div>
+          <h3 data-i18n="s2.title">Pentest automatizado Web + IA</h3>
+          <p data-i18n="s2.desc">Agentes de IA mapeiam e atacam sua aplicação como um adversário real. Antes de entrar no relatório, cada vulnerabilidade é reproduzida à mão.</p>
+          <ul class="list">
+            <li data-i18n="s2.i1">Recon de superfície: subdomínios, endpoints e APIs</li>
+            <li data-i18n="s2.i2">OWASP Top 10 e API Top 10: IDOR, BOLA, BFLA, JWT</li>
+            <li data-i18n="s2.i3">Exploração validada, sem falso positivo no relatório</li>
+          </ul>
+        </article>
+        <article class="card">
+          <div class="card-top"><span class="tag">[SSDLC]</span></div>
+          <h3 data-i18n="s3.title">Consultoria de desenvolvimento seguro</h3>
+          <p data-i18n="s3.desc">Segurança dentro do processo do seu time, do desenho da feature ao deploy, para a próxima falha nem chegar a ser escrita.</p>
+          <ul class="list">
+            <li data-i18n="s3.i1">Modelagem de ameaças de novas features</li>
+            <li data-i18n="s3.i2">Checklists e revisão de PR com o time</li>
+            <li data-i18n="s3.i3">SAST, SCA e secret scanning no CI</li>
+            <li data-i18n="s3.i4">Treinamento prático com falhas do seu próprio código</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="metodo">
+    <div class="wrap">
+      <span class="eyebrow">[ <span data-i18n="method.eyebrow">método</span> ]</span>
+      <h2 data-i18n="method.title">A IA dá escala. O pentester dá a certeza.</h2>
+      <div class="method">
+        <ol class="steps">
+          <li><span class="step-n">01</span><div><h4 data-i18n="m1.t">Escopo e autorização</h4><p data-i18n="m1.d">Definimos alvos, janela de teste e regras de engajamento. Nada é testado sem autorização formal.</p></div></li>
+          <li><span class="step-n">02</span><div><h4 data-i18n="m2.t">Recon e ataque</h4><p data-i18n="m2.d">Ferramentas e agentes de IA mapeiam a superfície e disparam milhares de hipóteses de ataque.</p></div></li>
+          <li><span class="step-n">03</span><div><h4 data-i18n="m3.t">Validação manual</h4><p data-i18n="m3.d">Cada hipótese é reproduzida à mão. O que não explora não vai para o relatório.</p></div></li>
+          <li><span class="step-n">04</span><div><h4 data-i18n="m4.t">Relatório</h4><p data-i18n="m4.d">Relatório em português e inglês com replicação passo a passo, impacto e correção sugerida.</p></div></li>
+        </ol>
+        <figure class="finding">
+          <div class="finding-box">
+            <div class="finding-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="finding-file">report.md</span></div>
+<pre><code><span class="sev" data-i18n="f.sev">ALTA</span> <span class="mute">CVSS 8.1 · BFLA</span>
+
+<span class="k">POST</span> /api/admin/users
+<span class="mute">Authorization: Bearer &lt;user_token&gt;</span>
+<span class="ok">→ 201 Created</span>
+
+<span class="lbl" data-i18n="f.impact">impacto</span><span data-i18n="f.impactv">qualquer conta cria administradores</span>
+<span class="lbl" data-i18n="f.fix">correção</span><span data-i18n="f.fixv">checar o papel no middleware</span></code></pre>
+          </div>
+          <figcaption data-i18n="f.caption">Exemplo ilustrativo do formato de um achado no relatório.</figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <span class="eyebrow">[ <span data-i18n="why.eyebrow">por que a delfino</span> ]</span>
+      <h2 data-i18n="why.title">Pentester web, não revendedor de scanner.</h2>
+      <div class="why">
+        <div><span class="why-k">../</span><h4 data-i18n="w1.t">Ataque de verdade</h4><p data-i18n="w1.d">Encadeio falhas como um adversário faria, em vez de colar a saída de uma ferramenta.</p></div>
+        <div><span class="why-k">0 FP</span><h4 data-i18n="w2.t">Sem falso positivo</h4><p data-i18n="w2.d">Todo achado do relatório foi explorado e tem prova reproduzível.</p></div>
+        <div><span class="why-k">PT/EN</span><h4 data-i18n="w3.t">Relatório bilíngue</h4><p data-i18n="w3.d">Uma versão em português e outra em inglês, para o dev que corrige e para o gestor que decide.</p></div>
+        <div><span class="why-k">ROE</span><h4 data-i18n="w4.t">Ético e autorizado</h4><p data-i18n="w4.d">Escopo assinado, janela combinada e sigilo sobre tudo o que for encontrado.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="wrap">
+      <span class="eyebrow">[ faq ]</span>
+      <h2 data-i18n="faq.title">Perguntas frequentes</h2>
+      <div class="faq">
+        <details><summary data-i18n="q1">A IA substitui o pentester?</summary><p data-i18n="a1">Não. A IA amplia a cobertura e a velocidade. Validação, encadeamento de falhas e análise de impacto ficam comigo.</p></details>
+        <details><summary data-i18n="q2">Preciso dar acesso ao meu código?</summary><p data-i18n="a2">Só na análise de codebase. O pentest web pode ser black-box (sem acesso) ou gray-box (com usuários de teste), conforme o escopo.</p></details>
+        <details><summary data-i18n="q3">Vocês testam em produção?</summary><p data-i18n="a3">Prefiro homologação. Quando o teste precisa ser em produção, acontece numa janela combinada e sem técnicas destrutivas.</p></details>
+        <details><summary data-i18n="q4">Quanto tempo leva e quanto custa?</summary><p data-i18n="a4">Depende do tamanho da aplicação e do escopo. Prazo e valor vêm fechados na proposta, depois de uma conversa rápida.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-final">
+    <div class="wrap">
+      <span class="eyebrow">$ ./start --engagement</span>
+      <h2 data-i18n="cta.title">Descubra o que um atacante já consegue ver na sua aplicação.</h2>
+      <div class="hero-ctas">
+        <a class="btn btn-blue js-wa" href="#" target="_blank" rel="noopener" data-i18n="cta.wa">Chamar no WhatsApp</a>
+        <button class="pill-cmd js-copy" type="button" id="copy-mail-2" aria-label="Copiar e-mail">
+          <span class="prompt">$</span><span class="cmd">mail helio.delfinola@gmail.com</span>
+          <svg class="copy-ico" viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+          <span class="copied" data-i18n="copied">copiado</span>
+        </button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <span class="brand">
+      <svg viewBox="48 56 176 130" class="brand-mark" aria-hidden="true"><rect x="52" y="150" width="32" height="32" rx="8"/><rect x="98" y="150" width="32" height="32" rx="8"/><path d="M190 60 L152 182 L182 182 L220 60 Z" class="slash"/></svg>
+      <span class="brand-name">delfino<span class="brand-sub">security</span></span>
+    </span>
+    <span class="foot-author">Hélio Delfino Lopes de Alcântara · <span data-i18n="foot.role">Pesquisador e pentester web especializado</span></span>
+    <span>© <span id="year">2026</span> Delfino Security</span>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+</body>
+</html>
