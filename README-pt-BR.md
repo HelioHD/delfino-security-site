@@ -53,9 +53,13 @@ Tipos de conteúdo: `writeup`, `sherlock`, `note`. O índice filtra por técnica
 `T1053` também pega `T1053.003`), plataforma e tipo; os filtros ficam na URL (`/labs/?type=sherlock`).
 Feed: `/labs/rss.xml`.
 
-Os três posts em `src/content/labs/` são **exemplos fictícios** (marcados na página e no índice) que mostram o
-formato. Como escrever um post real, as regras de publicação do HTB e o checklist de print:
-[docs/labs-authoring-pt-BR.md](docs/labs-authoring-pt-BR.md).
+Além dos três **exemplos fictícios** (marcados na página e no índice), há um write-up real: **Cap**
+(máquina easy aposentada do HTB), em PT e EN. Como escrever um post real, as regras de publicação do HTB
+e o checklist de print: [docs/labs-authoring-pt-BR.md](docs/labs-authoring-pt-BR.md).
+
+Dois write-ups reais ficam **em espera** em [`labs-pending/`](labs-pending/README.md) — Abducted e
+Bedside — porque dependem da data de aposentadoria de cada box, que precisa ser confirmada na conta do HTB.
+O build recusa conteúdo do HTB sem data de aposentadoria válida, então eles só entram depois dessa confirmação.
 
 ### Estrutura
 
