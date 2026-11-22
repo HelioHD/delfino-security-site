@@ -1,0 +1,33 @@
+{
+  "$schema": "../../schemas/rules-index.schema.json",
+  "schemaVersion": 1,
+  "repository": "HelioHD/detections",
+  "release": "v0.0.0-sample",
+  "commit": "0000000000000000000000000000000000000000",
+  "generatedAt": "2026-11-22T00:00:00Z",
+  "sample": true,
+  "rules": [
+    {
+      "id": "web/path_traversal_dotdot",
+      "title": "Path traversal sequence in request URI (Nginx JSON)",
+      "format": "sigma",
+      "path": "sigma/web/path_traversal_dotdot.yml",
+      "url": "https://github.com/HelioHD/detections/blob/v0.0.0-sample/sigma/web/path_traversal_dotdot.yml",
+      "attack": ["T1190", "T1083"],
+      "status": "experimental",
+      "tests": { "positive": 3, "negative": 4 },
+      "ci": "passing"
+    },
+    {
+      "id": "linux/ssh_bruteforce_then_success",
+      "title": "SSH brute force followed by a successful login",
+      "format": "sigma",
+      "path": "sigma/linux/ssh_bruteforce_then_success.yml",
+      "url": "https://github.com/HelioHD/detections/blob/v0.0.0-sample/sigma/linux/ssh_bruteforce_then_success.yml",
+      "attack": ["T1110.001", "T1078"],
+      "status": "experimental",
+      "tests": { "positive": 2, "negative": 3 },
+      "ci": "passing"
+    }
+  ]
+}

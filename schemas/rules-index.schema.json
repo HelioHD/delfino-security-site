@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/HelioHD/delfino-security-site/schemas/rules-index.schema.json",
+  "title": "Detection rules index",
+  "description": "Release asset published by the detections repository. The site pins one release of this file and resolves evidence level 2 links through it.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "repository", "release", "commit", "generatedAt", "sample", "rules"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "schemaVersion": { "const": 1 },
+    "repository": {
+      "description": "GitHub owner/name of the detections repository.",
+      "type": "string",
+      "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"
+    },
+    "release": {
+      "description": "Release tag this index was generated for.",
+      "type": "string",
+      "pattern": "^v\d+\.\d+\.\d+(-[0-9A-Za-z.-]+)?$"
+    },
+    "commit": {
+      "description": "Full commit SHA the release points to.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{40}$"
+    },
+    "generatedAt": { "type": "string", "format": "date-time" },
+    "sample": {
+      "description": "true only for the placeholder shipped before the first real release.",
+      "type": "boolean"
+    },
+    "rules": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/rule" }
+    }
+  },
+  "$defs": {
+    "rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "format", "path", "url", "attack", "status", "tests", "ci"],
+      "properties": {
+        "id": {
+          "description": "Stable identifier used by posts, e.g. web/path_traversal_dotdot.",
+          "type": "string",
+          "pattern": "^[a-z0-9_]+(/[a-z0-9_]+)+$"
+        },
+        "title": { "type": "string", "minLength": 1 },
+        "format": { "enum": ["sigma", "yara"] },
+        "path": { "type": "string", "minLength": 1 },
+        "url": {
+          "description": "Link to the rule file at the pinned commit or tag.",
+          "type": "string",
+          "format": "uri",
+          "pattern": "^https://"
+        },
+        "attack": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^T\d{4}(\.\d{3})?$" }
+        },
+        "status": { "enum": ["stable", "test", "experimental"] },
+        "tests": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["positive", "negative"],
+          "properties": {
+            "positive": { "type": "integer", "minimum": 1 },
+            "negative": { "type": "integer", "minimum": 1 }
+          }
+        },
+        "ci": {
+          "description": "Only rules whose positive and negative tests pass in CI are published.",
+          "const": "passing"
+        }
+      }
+    }
+  }
+}
