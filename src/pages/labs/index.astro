@@ -1,0 +1,87 @@
+---
+import EvidenceBadge from '../../components/EvidenceBadge.astro';
+import PostCard from '../../components/PostCard.astro';
+import LabsLayout from '../../layouts/LabsLayout.astro';
+import { dictionaries, translate } from '../../lib/i18n';
+import { getPostGroups } from '../../lib/posts';
+import { evidenceLevels, platforms, postTypes } from '../../lib/taxonomy';
+
+const lang = 'pt-BR';
+const groups = await getPostGroups();
+const posts = groups.flatMap((group) => group.variants);
+const attackIds = [...new Set(posts.flatMap((post) => post.data.attack.flatMap((id) => [id.split('.')[0], id])))].sort();
+const usedPlatforms = platforms.filter((platform) => posts.some((post) => post.data.platform === platform));
+const usedTypes = postTypes.filter((type) => posts.some((post) => post.data.type === type));
+const defaultVariant = (variants: typeof posts) => variants.find((post) => post.data.lang === lang) ?? variants[0];
+const t = (key: Parameters<typeof translate>[1]) => translate(lang, key);
+---
+
+<LabsLayout title={t('index.title')} description={t('index.description')} lang={lang} languageSwitch={{ mode: 'toggle' }}>
+  <section class="page-head">
+    <span class="eyebrow">[ <span data-i18n="index.eyebrow">{t('index.eyebrow')}</span> ]</span>
+    <h1 class="page-title" data-i18n="index.heading">{t('index.heading')}</h1>
+    <p class="page-lead" data-i18n="index.lead">{t('index.lead')}</p>
+    <ul class="level-list" aria-label={t('index.levels')}>
+      {
+        evidenceLevels.map((level) => (
+          <li>
+            <EvidenceBadge level={level} lang={lang} i18n />
+            <span data-i18n={`detection.level${level}Text`}>{t(`detection.level${level}Text`)}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <section class="section" aria-labelledby="posts-heading">
+    <h2 id="posts-heading" class="sr-only">Posts</h2>
+    <form class="filters" id="filters">
+      <div class="filter">
+        <label for="filter-attack" data-i18n="filter.attack">{t('filter.attack')}</label>
+        <select id="filter-attack" name="attack">
+          <option value="" data-i18n="filter.all">{t('filter.all')}</option>
+          {attackIds.map((id) => <option value={id}>{id}</option>)}
+        </select>
+      </div>
+      <div class="filter">
+        <label for="filter-platform" data-i18n="filter.platform">{t('filter.platform')}</label>
+        <select id="filter-platform" name="platform">
+          <option value="" data-i18n="filter.all">{t('filter.all')}</option>
+          {usedPlatforms.map((platform) => <option value={platform} data-i18n={`platform.${platform}`}>{t(`platform.${platform}`)}</option>)}
+        </select>
+      </div>
+      <div class="filter">
+        <label for="filter-type" data-i18n="filter.type">{t('filter.type')}</label>
+        <select id="filter-type" name="type">
+          <option value="" data-i18n="filter.allTypes">{t('filter.allTypes')}</option>
+          {usedTypes.map((type) => <option value={type} data-i18n={`type.${type}`}>{t(`type.${type}`)}</option>)}
+        </select>
+      </div>
+      <button class="btn-line" type="reset" data-i18n="filter.clear">{t('filter.clear')}</button>
+    </form>
+
+    <p class="result-count" aria-live="polite"><span id="result-count">{groups.length}</span> <span data-i18n="filter.count">{t('filter.count')}</span></p>
+    <ul class="post-list" id="post-list">
+      {
+        groups.map((group) =>
+          group.variants.map((post) => (
+            <PostCard
+              post={post}
+              group={group.slug}
+              languages={group.variants.map((variant) => (variant.data.lang === 'en' ? 'en' : 'pt'))}
+              hidden={post !== defaultVariant(group.variants)}
+            />
+          ))
+        )
+      }
+    </ul>
+    <p class="empty" id="empty" hidden data-i18n="filter.empty">{t('filter.empty')}</p>
+  </section>
+
+  <script is:inline type="application/json" id="labs-i18n" set:html={JSON.stringify({ pt: dictionaries['pt-BR'], en: dictionaries.en })} />
+</LabsLayout>
+
+<script>
+  import { initLabsIndex } from '../../scripts/labsIndex';
+  initLabsIndex();
+</script>

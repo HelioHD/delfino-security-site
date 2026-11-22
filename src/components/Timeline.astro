@@ -1,0 +1,28 @@
+---
+import type { Post } from '../lib/posts';
+import AttackTags from './AttackTags.astro';
+
+interface Props {
+  steps: Post['data']['timeline'];
+}
+
+const { steps } = Astro.props;
+---
+
+<ol class="timeline">
+  {
+    steps.map((step) => (
+      <li>
+        <div>
+          <h3>{step.title}</h3>
+          {step.detail && <p>{step.detail}</p>}
+          {step.attack.length > 0 && (
+            <div class="card-row">
+              <AttackTags ids={step.attack} />
+            </div>
+          )}
+        </div>
+      </li>
+    ))
+  }
+</ol>

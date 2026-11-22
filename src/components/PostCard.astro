@@ -1,0 +1,55 @@
+---
+import { type Post, postUrl } from '../lib/posts';
+import { formatDate, translate } from '../lib/i18n';
+import AttackTags from './AttackTags.astro';
+import EvidenceBadge from './EvidenceBadge.astro';
+
+interface Props {
+  post: Post;
+  group: string;
+  languages: string[];
+  hidden?: boolean;
+}
+
+const { post, group, languages, hidden = false } = Astro.props;
+const { data } = post;
+const lang = data.lang;
+const platformText = data.platform === 'htb' && data.htbKind
+  ? `${translate(lang, 'platform.htb')} · ${translate(lang, `htbKind.${data.htbKind}` as const)}`
+  : data.platform === 'htb'
+    ? translate(lang, 'platform.htb')
+    : data.platformLabel;
+---
+
+<li
+  class="post-card"
+  hidden={hidden}
+  data-group={group}
+  data-lang={lang === 'en' ? 'en' : 'pt'}
+  data-languages={languages.join(' ')}
+  data-type={data.type}
+  data-platform={data.platform}
+  data-attack={data.attack.join(' ')}
+>
+  <div class="card-row">
+    <span class="tag">{translate(lang, `type.${data.type}` as const)}</span>
+    {data.detection && <EvidenceBadge level={data.detection.level} lang={lang} />}
+    {data.example && <span class="tag-plain tag-example">{translate(lang, 'post.example')}</span>}
+    {languages.length === 1 && <span class="tag-plain">{lang === 'en' ? 'EN' : 'PT'}</span>}
+  </div>
+  <h2><a href={postUrl(post)} hreflang={lang}>{data.title}</a></h2>
+  <p>{data.summary}</p>
+  <div class="meta-inline">
+    <span>{platformText}</span>
+    {data.difficulty && <span>{translate(lang, `difficulty.${data.difficulty}` as const)}</span>}
+    {data.os && <span>{translate(lang, `os.${data.os}` as const)}</span>}
+    <time datetime={data.publishedOn.toISOString()}>{formatDate(lang, data.publishedOn)}</time>
+  </div>
+  {
+    data.attack.length > 0 && (
+      <div class="card-row">
+        <AttackTags ids={data.attack} />
+      </div>
+    )
+  }
+</li>

@@ -1,0 +1,48 @@
+---
+import { translate } from '../lib/i18n';
+import type { Language } from '../lib/taxonomy';
+
+interface Props {
+  lang: Language;
+}
+
+const { lang } = Astro.props;
+---
+
+<code-copy data-copy={translate(lang, 'code.copy')} data-copied={translate(lang, 'code.copied')} hidden></code-copy>
+
+<script>
+  class CodeCopy extends HTMLElement {
+    connectedCallback() {
+      const copyLabel = this.dataset.copy ?? 'Copy';
+      const copiedLabel = this.dataset.copied ?? 'Copied';
+      document.querySelectorAll<HTMLPreElement>('[data-code-root] pre.astro-code').forEach((pre) => {
+        const frame = document.createElement('div');
+        frame.className = 'code-window';
+        const bar = document.createElement('div');
+        bar.className = 'code-bar';
+        bar.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+        const language = document.createElement('span');
+        language.className = 'code-lang';
+        language.textContent = pre.dataset.language ?? '';
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'code-copy';
+        button.textContent = copyLabel;
+        button.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(pre.innerText.replace(/\n$/, ''));
+            button.textContent = copiedLabel;
+          } catch {
+            getSelection()?.selectAllChildren(pre);
+          }
+          setTimeout(() => (button.textContent = copyLabel), 1400);
+        });
+        bar.append(language, button);
+        pre.replaceWith(frame);
+        frame.append(bar, pre);
+      });
+    }
+  }
+  customElements.define('code-copy', CodeCopy);
+</script>

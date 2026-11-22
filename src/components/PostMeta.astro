@@ -1,0 +1,68 @@
+---
+import type { Post } from '../lib/posts';
+import { formatDate, translate } from '../lib/i18n';
+import AttackTags from './AttackTags.astro';
+
+interface Props {
+  post: Post;
+}
+
+const { data } = Astro.props.post;
+const lang = data.lang;
+const platform = data.platform === 'htb'
+  ? `${translate(lang, 'platform.htb')}${data.htbKind ? ` · ${translate(lang, `htbKind.${data.htbKind}` as const)}` : ''}`
+  : `${translate(lang, `platform.${data.platform}` as const)} · ${data.platformLabel}`;
+---
+
+<dl class="post-meta">
+  <div>
+    <dt>{translate(lang, 'meta.platform')}</dt>
+    <dd>{platform}</dd>
+  </div>
+  {
+    data.difficulty && (
+      <div>
+        <dt>{translate(lang, 'meta.difficulty')}</dt>
+        <dd>{translate(lang, `difficulty.${data.difficulty}` as const)}</dd>
+      </div>
+    )
+  }
+  {
+    data.os && (
+      <div>
+        <dt>{translate(lang, 'meta.os')}</dt>
+        <dd>{translate(lang, `os.${data.os}` as const)}</dd>
+      </div>
+    )
+  }
+  {
+    data.retiredOn && (
+      <div>
+        <dt>{translate(lang, 'meta.retiredOn')}</dt>
+        <dd>{formatDate(lang, data.retiredOn)}</dd>
+      </div>
+    )
+  }
+  {
+    data.eventDate && (
+      <div>
+        <dt>{translate(lang, 'meta.eventDate')}</dt>
+        <dd>{formatDate(lang, data.eventDate)}</dd>
+      </div>
+    )
+  }
+  <div>
+    <dt>{translate(lang, 'meta.publishedOn')}</dt>
+    <dd><time datetime={data.publishedOn.toISOString()}>{formatDate(lang, data.publishedOn)}</time></dd>
+  </div>
+  {
+    data.attack.length > 0 && (
+      <div class="wide">
+        <dt>{translate(lang, 'meta.attack')}</dt>
+        <dd class="tags">
+          <AttackTags ids={data.attack} />
+        </dd>
+      </div>
+    )
+  }
+</dl>

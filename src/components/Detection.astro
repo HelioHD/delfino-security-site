@@ -1,0 +1,84 @@
+---
+import { Image } from 'astro:assets';
+import { Code } from 'astro:components';
+import type { ComponentProps } from 'astro/types';
+import type { Post } from '../lib/posts';
+import { formatDate, translate } from '../lib/i18n';
+import { findRule, rulesIndex } from '../lib/rulesIndex';
+import type { Language } from '../lib/taxonomy';
+import EvidenceBadge from './EvidenceBadge.astro';
+
+interface Props {
+  detection: NonNullable<Post['data']['detection']>;
+  lang: Language;
+}
+
+const { detection, lang } = Astro.props;
+const rule = 'rule' in detection && detection.rule ? findRule(detection.rule) : undefined;
+const levelTextKey = `detection.level${detection.level}Text` as const;
+---
+
+<section class="detection" aria-labelledby="detection-heading" data-code-root>
+  <div class="detection-head">
+    <EvidenceBadge level={detection.level} lang={lang} />
+    <h2 id="detection-heading">{translate(lang, 'detection.heading')}</h2>
+    <p>{translate(lang, levelTextKey)}</p>
+  </div>
+
+  <div class="detection-block">
+    <span class="label-text">{translate(lang, 'detection.telemetry')}</span>
+    <ul>{detection.telemetry.map((item) => <li>{item}</li>)}</ul>
+  </div>
+
+  {
+    rule && (
+      <div class="detection-block">
+        <dl>
+          <dt>{translate(lang, 'detection.rule')}</dt>
+          <dd>
+            <a href={rule.url} rel="noopener" target="_blank">{rule.id}</a> · {rule.title}
+          </dd>
+          <dt>{translate(lang, 'detection.release')}</dt>
+          <dd>
+            {rulesIndex.repository} @ {rulesIndex.release}
+          </dd>
+          <dt>{translate(lang, 'detection.tests')}</dt>
+          <dd>{translate(lang, 'detection.testsValue', rule.tests)}</dd>
+        </dl>
+        {rulesIndex.sample && <p class="detection-sample">{translate(lang, 'detection.sample')}</p>}
+      </div>
+    )
+  }
+
+  {
+    detection.logic && (
+      <div class="detection-block">
+        <span class="label-text">{translate(lang, 'detection.logic')}</span>
+        <Code code={detection.logic.trimEnd()} lang={detection.logicLanguage as ComponentProps<typeof Code>['lang']} theme="css-variables" />
+      </div>
+    )
+  }
+
+  {
+    detection.level === 3 && (
+      <div class="detection-block">
+        <Image src={detection.screenshot} alt={detection.screenshotAlt} />
+        <dl>
+          <dt>{translate(lang, 'detection.validatedOn')}</dt>
+          <dd>{formatDate(lang, detection.validatedOn)}</dd>
+          <dt>{translate(lang, 'detection.lab')}</dt>
+          <dd>{detection.lab}</dd>
+        </dl>
+      </div>
+    )
+  }
+
+  {
+    detection.notes && (
+      <div class="detection-block">
+        <span class="label-text">{translate(lang, 'detection.notes')}</span>
+        <p>{detection.notes}</p>
+      </div>
+    )
+  }
+</section>
