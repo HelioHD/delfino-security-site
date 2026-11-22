@@ -7,7 +7,7 @@ platform: htb
 htbKind: machine
 difficulty: medium
 os: linux
-# retiredOn: TODO-AAAA-MM-DD   # Season 11 — CONFIRMAR que está Retired antes de publicar
+retiredOn: 2026-08-30
 publishedOn: 2026-11-22
 attack: [T1190, T1211, T1210, T1552.004, T1068]
 timeline:
@@ -42,7 +42,7 @@ detection:
   notes: 'Nível 1: não rodado contra log real. A classe do bug (pickle.loads em dado não confiável) não dá sinal próprio; o detectável é o efeito — o worker de PDF virando processo de shell/rede.'
 ---
 
-> Máquina aposentada do Hack The Box. Sem flags. **Season 11**: confirme que está Retired antes de publicar (ver labs-pending/README.md).
+> Máquina aposentada do Hack The Box (Season 11). Sem flags.
 
 ## Recon
 

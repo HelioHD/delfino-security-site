@@ -7,7 +7,7 @@ platform: htb
 htbKind: machine
 difficulty: medium
 os: linux
-# retiredOn: TODO-AAAA-MM-DD   # confirmar na página da box (precisa estar Retired) e no passado
+retiredOn: 2026-08-30
 publishedOn: 2026-11-22
 attack: [T1190, T1552.001, T1078, T1547.013, T1548]
 timeline:
@@ -43,7 +43,7 @@ detection:
   notes: 'Nível 1: não rodado contra log real. O caminho confiável é o auditd no host; o log do Samba sozinho raramente mostra o comando executado.'
 ---
 
-> Máquina aposentada do Hack The Box. Sem flags. Confirme a data de aposentadoria antes de publicar (ver labs-pending/README.md).
+> Máquina aposentada do Hack The Box. Sem flags.
 
 ## Recon
 
