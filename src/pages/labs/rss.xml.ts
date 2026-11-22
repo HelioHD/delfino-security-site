@@ -4,7 +4,7 @@ import { translate } from '../../lib/i18n';
 import { getPosts, postUrl } from '../../lib/posts';
 
 export async function GET(context: APIContext) {
-  const site = context.site ?? new URL('https://example.invalid');
+  const site = context.site ?? new URL('https://delfino-security-site.vercel.app');
   const posts = await getPosts();
   return rss({
     title: translate('en', 'feed.title'),

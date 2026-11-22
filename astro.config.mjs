@@ -18,7 +18,7 @@ function landingPassthrough() {
 }
 
 export default defineConfig({
-  site: process.env.SITE_URL ?? 'https://example.invalid',
+  site: process.env.SITE_URL ?? 'https://delfino-security-site.vercel.app',
   output: 'static',
   trailingSlash: 'always',
   integrations: [landingPassthrough()],
