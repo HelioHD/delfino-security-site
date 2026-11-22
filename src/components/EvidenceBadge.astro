@@ -1,0 +1,19 @@
+---
+import { translate } from '../lib/i18n';
+import type { EvidenceLevel, Language } from '../lib/taxonomy';
+
+interface Props {
+  level: EvidenceLevel;
+  lang: Language;
+  i18n?: boolean;
+}
+
+const { level, lang, i18n = false } = Astro.props;
+const levelKey = `detection.level${level}` as const;
+---
+
+<span class={`evidence evidence-${level}`}>
+  <span data-i18n={i18n ? 'detection.level' : undefined}>{translate(lang, 'detection.level')}</span>
+  {level} ·
+  <span data-i18n={i18n ? levelKey : undefined}>{translate(lang, levelKey)}</span>
+</span>

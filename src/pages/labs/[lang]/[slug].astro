@@ -1,0 +1,90 @@
+---
+import { render } from 'astro:content';
+import CodeCopy from '../../../components/CodeCopy.astro';
+import Detection from '../../../components/Detection.astro';
+import PostMeta from '../../../components/PostMeta.astro';
+import Timeline from '../../../components/Timeline.astro';
+import LabsLayout from '../../../layouts/LabsLayout.astro';
+import { translate, urlLang } from '../../../lib/i18n';
+import { findTranslation, getPosts, type Post, postSlug, postUrl } from '../../../lib/posts';
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post) => ({
+    params: { lang: urlLang[post.data.lang], slug: postSlug(post) },
+    props: { post, translation: findTranslation(posts, post) },
+  }));
+}
+
+interface Props {
+  post: Post;
+  translation?: Post;
+}
+
+const { post, translation } = Astro.props;
+const { data } = post;
+const lang = data.lang;
+const t = (key: Parameters<typeof translate>[1]) => translate(lang, key);
+const { Content } = await render(post);
+const translationUrl = translation ? postUrl(translation) : undefined;
+---
+
+<LabsLayout
+  title={`${data.title} · Delfino Security Labs`}
+  description={data.summary}
+  lang={lang}
+  ogType="article"
+  languageSwitch={{ mode: 'link', href: translationUrl }}
+  alternate={translation && translationUrl ? { lang: translation.data.lang, href: translationUrl } : undefined}
+>
+  <article class="narrow">
+    <header class="page-head">
+      {
+        data.example && (
+          <div class="example-banner" role="note">
+            <strong>{t('post.example')}</strong>
+            <span>{t('post.exampleText')}</span>
+          </div>
+        )
+      }
+      <span class="eyebrow">[ {t(`type.${data.type}` as const)} ]</span>
+      <h1 class="page-title">{data.title}</h1>
+      <PostMeta post={post} />
+    </header>
+
+    <section class="section" aria-labelledby="summary-heading">
+      <h2 class="section-title" id="summary-heading">{t('post.summary')}</h2>
+      <p class="page-lead">{data.summary}</p>
+    </section>
+
+    {
+      data.timeline.length > 0 && (
+        <section class="section" aria-labelledby="timeline-heading">
+          <h2 class="section-title" id="timeline-heading">{t('post.timeline')}</h2>
+          <Timeline steps={data.timeline} />
+        </section>
+      )
+    }
+
+    <section class="section" aria-labelledby="content-heading">
+      <h2 class="section-title" id="content-heading">{t('post.content')}</h2>
+      <div class="prose" data-code-root>
+        <Content />
+      </div>
+    </section>
+
+    {
+      data.detection && (
+        <section class="section">
+          <Detection detection={data.detection} lang={lang} />
+        </section>
+      )
+    }
+
+    <footer class="section post-foot">
+      <a href="/labs/">← {t('post.backToIndex')}</a>
+      {translationUrl ? <a href={translationUrl} hreflang={translation?.data.lang}>{t('post.translation')}</a> : <span>{t('post.onlyThisLanguage')}</span>}
+    </footer>
+  </article>
+  <CodeCopy lang={lang} />
+</LabsLayout>

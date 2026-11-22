@@ -1,0 +1,11 @@
+---
+import { attackUrl } from '../lib/attack';
+
+interface Props {
+  ids: string[];
+}
+
+const { ids } = Astro.props;
+---
+
+{ids.map((id) => <a class="tag" href={attackUrl(id)} rel="noopener" target="_blank" title={`MITRE ATT&CK ${id}`}>{id}</a>)}

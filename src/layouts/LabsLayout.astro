@@ -1,0 +1,97 @@
+---
+import BrandMark from '../components/BrandMark.astro';
+import { translate } from '../lib/i18n';
+import type { Language } from '../lib/taxonomy';
+import '../styles/tokens.css';
+import '../styles/labs.css';
+
+type LanguageSwitch = { mode: 'toggle' } | { mode: 'link'; href?: string };
+
+interface Props {
+  title: string;
+  description: string;
+  lang: Language;
+  languageSwitch: LanguageSwitch;
+  alternate?: { lang: Language; href: string };
+  ogType?: 'website' | 'article';
+}
+
+const { title, description, lang, languageSwitch, alternate, ogType = 'website' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const feedUrl = new URL('/labs/rss.xml', Astro.site);
+const i18n = languageSwitch.mode === 'toggle' ? 'site.role' : undefined;
+const activeLang = lang === 'en' ? 'en' : 'pt';
+---
+
+<!doctype html>
+<html lang={lang} data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Hélio Delfino Lopes de Alcântara" />
+    <meta name="theme-color" content="#f6f6f3" />
+    <link rel="canonical" href={canonical} />
+    {alternate && <link rel="alternate" hreflang={alternate.lang} href={new URL(alternate.href, Astro.site)} />}
+    <link rel="alternate" type="application/rss+xml" title={translate(lang, 'feed.title')} href={feedUrl} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="site-nav">
+      <div class="wrap">
+        <a class="brand" href="/" aria-label="Delfino Security">
+          <BrandMark />
+          <span class="brand-name">delfino<span class="brand-sub">security</span></span>
+        </a>
+        <nav class="nav-actions" aria-label="Labs">
+          <a href="/labs/" aria-current={Astro.url.pathname === '/labs/' ? 'page' : undefined} data-i18n={i18n && 'site.labs'}>{translate(lang, 'site.labs')}</a>
+          <a class="nav-rss" href="/labs/rss.xml">{translate(lang, 'feed.link')}</a>
+          {
+            languageSwitch.mode === 'toggle' ? (
+              <button class="lang" type="button" id="lang-toggle" aria-label={translate(lang, 'lang.label')}>
+                <span data-lang="pt" class:list={{ on: activeLang === 'pt' }}>PT</span>
+                <span data-lang="en" class:list={{ on: activeLang === 'en' }}>EN</span>
+              </button>
+            ) : languageSwitch.href ? (
+              <a class="lang" href={languageSwitch.href} hreflang={alternate?.lang} aria-label={translate(lang, 'post.translation')} data-switch-lang={activeLang === 'pt' ? 'en' : 'pt'}>
+                <span data-lang="pt" class:list={{ on: activeLang === 'pt' }}>PT</span>
+                <span data-lang="en" class:list={{ on: activeLang === 'en' }}>EN</span>
+              </a>
+            ) : (
+              <span class="lang" aria-disabled="true" title={translate(lang, 'post.onlyThisLanguage')}>
+                <span data-lang={activeLang} class="on">{activeLang.toUpperCase()}</span>
+              </span>
+            )
+          }
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <slot />
+    </main>
+
+    <footer class="footer">
+      <div class="wrap">
+        <span class="foot-author">Hélio Delfino Lopes de Alcântara · <span data-i18n={i18n}>{translate(lang, 'site.role')}</span></span>
+        <span>© {new Date().getFullYear()} Delfino Security</span>
+      </div>
+    </footer>
+
+    <script>
+      document.querySelectorAll<HTMLElement>('[data-switch-lang]').forEach((link) => {
+        link.addEventListener('click', () => {
+          try {
+            localStorage.setItem('ds-lang', link.dataset.switchLang ?? 'pt');
+          } catch {}
+        });
+      });
+    </script>
+  </body>
+</html>
