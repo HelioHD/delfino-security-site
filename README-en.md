@@ -53,9 +53,8 @@ Content types: `writeup`, `sherlock`, `note`. The index filters by ATT&CK techni
 also matches `T1053.003`), platform and type; filters are kept in the URL (`/labs/?type=sherlock`).
 Feed: `/labs/rss.xml`.
 
-Besides the three **fictional examples** (marked on the page and in the index), there is one real write-up:
-**Cap** (a retired easy HTB machine), in PT and EN. How to write a real post, the HTB publishing rules and the
-screenshot checklist: [docs/labs-authoring-en.md](docs/labs-authoring-en.md).
+The first real write-up is **Cap** (a retired easy HTB machine), in PT and EN. How to write a post, the HTB
+publishing rules and the screenshot checklist: [docs/labs-authoring-en.md](docs/labs-authoring-en.md).
 
 Two more real write-ups are **parked** in [`labs-pending/`](labs-pending/README.md) — Abducted and Bedside —
 because each needs its box's retirement date, to be confirmed in the HTB account. The build refuses HTB content
